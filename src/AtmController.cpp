@@ -74,13 +74,14 @@ Result AtmController::accountAction(Action action, unsigned int amount)
             res.str = "Withdraw success. Please collect your cash. New amount in the account is " 
                 + to_string(_bank.getBalance(_currSession.cardNum, _currSession.accountType));
             res.success = true;
+
+            _cashBinAmount -= amount;
         }
         else
         {
             res.str = "Withdraw Failure!!!"; 
             res.success = false;
-        }
-        
+        }     
 
         break;
 
@@ -97,6 +98,8 @@ Result AtmController::accountAction(Action action, unsigned int amount)
             res.str = "Deposit success. New amount in the account is " 
                 + to_string(_bank.getBalance(_currSession.cardNum, _currSession.accountType));
             res.success = true;
+
+            _cashBinAmount += amount;
         }
         else
         {
