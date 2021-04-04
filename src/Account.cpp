@@ -1,18 +1,6 @@
 #include "Account.h"
 
-inline string toString(AccountType accountType)
-{
-
-  switch (accountType)
-  {
-  case Checking:
-    return "Checking";
-
-  case Savings:
-    return "Savings";
-  }  
-  return "Checking";
-}
+inline string toString(AccountType accountType);
 
 bool Account::addAccountType(AccountType accountType, unsigned int newBalance) 
 {
@@ -50,4 +38,9 @@ unsigned int Account::getBalance(AccountType accountType) const
 string Account::getPin() const
 {
     return _pin;
+}
+
+inline string toString(AccountType accountType)
+{
+  return accountType==Checking ? "Checking":"Savings";
 }
