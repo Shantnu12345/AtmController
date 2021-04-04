@@ -58,19 +58,33 @@ void runSession(AtmController controller,
 
 int main()
 {
-    //Test 0
-    cout<<"====================Test0========================"<<endl;
+    cout<<"====================Test0 - No account========================"<<endl;
     Bank emptyBank;
     AtmController emptyAtm(emptyBank);
     vector<ActionItem> actionsList = { ActionItem(ViewBalance), ActionItem(EndSession) };
     runSession(emptyAtm, "123456", "123", Savings, actionsList);
 
-    cout<<endl<<"====================Test1========================"<<endl;
-    //Test1
+    cout<<endl<<"====================Test1 - Deposit========================"<<endl;
     Bank testBank1;
     testBank1.addAccount("982567", "456", Checking, 10000);
     testBank1.addAccount("142567", "643", Checking, 20000);
     AtmController testAtm1(testBank1);
     actionsList = { ActionItem(ViewBalance), ActionItem(Deposit, 1000), ActionItem(EndSession) };
     runSession(testAtm1, "982567", "456", Checking, actionsList);
+
+    cout<<endl<<"====================Test2 - Withdraw ========================"<<endl;
+    Bank testBank2;
+    testBank2.addAccount("982567", "456", Checking, 10000);
+    testBank2.addAccount("142567", "643", Savings,  20000);
+    AtmController testAtm2(testBank2);
+    actionsList = { ActionItem(ViewBalance), ActionItem(Withdraw, 2000), ActionItem(EndSession) };
+    runSession(testAtm2, "142567", "643", Savings, actionsList);
+
+    cout<<endl<<"====================Test3 - Incorrect account type chosen ========================"<<endl;
+    Bank testBank3;
+    testBank3.addAccount("982567", "456", Checking, 10000);
+    testBank3.addAccount("142567", "643", Checking, 20000);
+    AtmController testAtm3(testBank3);
+    actionsList = { ActionItem(ViewBalance), ActionItem(Deposit, 1000), ActionItem(EndSession) };
+    runSession(testAtm3, "982567", "456", Savings, actionsList);
 }
