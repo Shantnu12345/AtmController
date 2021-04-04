@@ -12,7 +12,7 @@ struct ActionItem
 };
 
 //Function to test the class functionality
-void runSession(AtmController controller, 
+void runSession(AtmController & controller, 
                 string cardNum, 
                 string pin, 
                 AccountType accountType, 
@@ -55,33 +55,26 @@ void runSession(AtmController controller,
 
 int main()
 {
+    Bank testBank;
+    testBank.addAccount("982567", "456", Checking, 10000);
+    testBank.addAccount("142567", "643", Checking, 20000);
+    AtmController testAtm(testBank);
+    
     cout<<"====================Test0 - No account========================"<<endl;
-    Bank emptyBank;
-    AtmController emptyAtm(emptyBank);
     vector<ActionItem> actionsList = { ActionItem(ViewBalance), ActionItem(EndSession) };
-    runSession(emptyAtm, "123456", "123", Savings, actionsList);
+    runSession(testAtm, "123456", "123", Savings, actionsList);
 
-    cout<<endl<<"====================Test1 - Deposit========================"<<endl;
-    Bank testBank1;
-    testBank1.addAccount("982567", "456", Checking, 10000);
-    testBank1.addAccount("142567", "643", Checking, 20000);
-    AtmController testAtm1(testBank1);
+    cout<<endl<<"====================Test1 - Incorrect account type chosen ========================"<<endl;
     actionsList = { ActionItem(ViewBalance), ActionItem(Deposit, 1000), ActionItem(EndSession) };
-    runSession(testAtm1, "982567", "456", Checking, actionsList);
+    runSession(testAtm, "982567", "456", Savings, actionsList);
 
-    cout<<endl<<"====================Test2 - Withdraw ========================"<<endl;
-    Bank testBank2;
-    testBank2.addAccount("982567", "456", Checking, 10000);
-    testBank2.addAccount("142567", "643", Savings,  20000);
-    AtmController testAtm2(testBank2);
+    cout<<endl<<"====================Test2 - Deposit========================"<<endl;
+    actionsList = { ActionItem(ViewBalance), ActionItem(Deposit, 1000), ActionItem(EndSession) };
+    runSession(testAtm, "142567", "643", Checking, actionsList);
+
+    cout<<endl<<"====================Test3 - Withdraw ========================"<<endl;
     actionsList = { ActionItem(ViewBalance), ActionItem(Withdraw, 2000), ActionItem(EndSession) };
-    runSession(testAtm2, "142567", "643", Savings, actionsList);
+    runSession(testAtm, "142567", "643", Checking, actionsList);
 
-    cout<<endl<<"====================Test3 - Incorrect account type chosen ========================"<<endl;
-    Bank testBank3;
-    testBank3.addAccount("982567", "456", Checking, 10000);
-    testBank3.addAccount("142567", "643", Checking, 20000);
-    AtmController testAtm3(testBank3);
-    actionsList = { ActionItem(ViewBalance), ActionItem(Deposit, 1000), ActionItem(EndSession) };
-    runSession(testAtm3, "982567", "456", Savings, actionsList);
+
 }
