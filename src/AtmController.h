@@ -37,11 +37,12 @@ public:
     bool swipe(string cardNum);
     bool validatePin(string pin);
     bool selectAccount(AccountType accountType);
-    Result accountAction(Action action, unsigned int amount=0);
+    Result accountAction(Action action, unsigned int amount=0); //Currently Supported actions: 
+                                                                //ViewBalance, Deposit, Withdraw
 
 protected:
-    Bank               _bank;
-    unsigned int       _cashBinAmount;
+    Bank               _bank; 
+    unsigned int       _cashBinAmount; //Current amount in the ATM
     CurrentSessionData _currSession;
 };
 

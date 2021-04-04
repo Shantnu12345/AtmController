@@ -11,6 +11,8 @@ enum AccountType
     Savings
 };
 
+
+//Dummy Account class to store information about about the customer's account
 class Account
 {
 public:
@@ -25,6 +27,6 @@ protected:
     string _cardNum;
     string _pin;
     unordered_map<string, unsigned int> _balances; //Maps from account type (example checking, savings) to balance info
-                                                //For simplicity it is assumed that a account type doesnt exist if 
-                                                //it is not present in _balances
+                                                   //For simplicity it is assumed that a account type doesnt exist if 
+                                                   //it is not present in _balances
 };
