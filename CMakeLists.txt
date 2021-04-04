@@ -9,4 +9,4 @@ project(AtmController)
 
 include_directories(./src)
 
-add_executable(AtmController src/main.cpp src/Bank.cpp src/AtmController.cpp)
+add_executable(AtmController src/main.cpp src/Bank.cpp src/AtmController.cpp src/Account.cpp)
