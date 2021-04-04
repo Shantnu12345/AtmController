@@ -45,14 +45,11 @@ void runSession(AtmController controller,
     //Finally, perform all the actions from the action list: Checkbalance, Withdraw, Deposit, Exit session
     for(auto const& action:actionsList)
     {
-        if(action.action==EndSession)
-            break;
-
         Result res = controller.accountAction(action.action, action.amount);
         cout<<res.str<<endl;
+        if(action.action==EndSession)
+            break;
     }
-
-    cout<<"Thank you dear customer. Have a wonderful day"<<endl;
 
 }
 

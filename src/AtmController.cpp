@@ -108,6 +108,11 @@ Result AtmController::accountAction(Action action, unsigned int amount)
         }
         break;
 
+    case EndSession:
+        _currSession.clear();
+        res.str = "Thank you dear customer. Have a wonderful day"; 
+        res.success = true;
+
     default:
         break;
     }
