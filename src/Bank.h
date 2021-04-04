@@ -11,30 +11,34 @@ enum AccountType
     Savings
 };
 
-struct AccountInfo
+class Account
 {
-    string accountNumber; //Not used for this exercise, but might be helpful in future
-    AccountType accountType;
-    unsigned int balance;
-    unsigned int maxAllowedDeposit;
+public:
+    Account(string cardNum, string pin, AccountType accountType, unsigned int newBalance)
+        : _cardNum(cardNum), _pin(pin), _balances() 
+    {
+        _balances[accountType] = newBalance;
+    }
+    
+    bool checkAccountTypeExists(AccountType accountType) const;
+    bool updateBalance(AccountType accountType, unsigned int newBalance);
+    unsigned getBalance(AccountType accountType) const;
+    string getPin() const;
 
-    void updateBalance(unsigned int newBalance) { balance = newBalance; }
-};
-
-struct Account
-{
-    string cardNum;
-    string pin;
-    unordered_map<AccountType, AccountInfo> _accounts; //Maps from account type (example checking, savings) to information about that account
-                                                       //considering a person's account can have only one savings/checking account 
+protected:
+    string _cardNum;
+    string _pin;
+    unordered_map<AccountType, unsigned int, std::hash<int>> _balances; //Maps from account type (example checking, savings) to balance info
+                                                        //For simplicity it is assumed that a account type doesnt exist if 
+                                                        //it is not present in _balances 
 };
 
 class Bank
 {
 public:
-    bool addAccount(string cardNum, string pin="1234", AccountType accountType=Checking, unsigned int balance=0);
-    bool updateAccount(string cardNum, string pin, AccountType accountType, unsigned int balance);
 
+    Bank() : _accounts() {}
+    bool addAccount(string cardNum, string pin="1234", AccountType accountType=Checking, unsigned int balance=0);
     bool checkAccountExists(string cardNum);
     bool checkPinValid(string cardNum, string pin);
     bool checkAccountTypeExists(string cardNum, AccountType accountType);
@@ -42,6 +46,6 @@ public:
     bool withdraw(string cardNum, AccountType accountType, unsigned int amount);
     bool deposit(string cardNum, AccountType accountType, unsigned int amount);
 
-    protected:
+protected:
     unordered_map<string, Account> _accounts;//maps from card number to person's account  
 };

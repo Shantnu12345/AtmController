@@ -1,11 +1,13 @@
 #include <vector>
 #include "AtmController.h"
 
-struct ActionAmount
+// An action item is made of an action (example view balance, withdraw, 
+// deposit, etc) and an associated amount (if any).
+struct ActionItem
 {
     Action action;
     unsigned int amount;
-    ActionAmount(Action action, unsigned int amount=0)
+    ActionItem(Action action, unsigned int amount=0)
         : action(action), amount(amount) {}
 };
 
@@ -14,7 +16,7 @@ void runSession(AtmController controller,
                 string cardNum, 
                 string pin, 
                 AccountType accountType, 
-                vector<ActionAmount> const& actionsList)
+                vector<ActionItem> const& actionsList)
 {
     cout<<"Welcome dear customer. Please swipe your card."<<endl;
     bool success = controller.swipe(cardNum);
@@ -56,12 +58,18 @@ void runSession(AtmController controller,
 
 int main()
 {
-    //Test 1
+    //Test 0
     Bank emptyBank;
     AtmController emptyAtm(emptyBank);
-    vector<ActionAmount> actionsList = {ViewBalance, EndSession};
+    vector<ActionItem> actionsList = { ActionItem(ViewBalance), ActionItem(EndSession) };
     runSession(emptyAtm, "123456", "123", Savings, actionsList);
 
-    //Test2
+    //Test1
+    Bank testBank1;
+    testBank1.addAccount("982567", "456", Checking, 10000);
+    testBank1.addAccount("142567", "643", Checking, 20000);
+    AtmController testAtm1(testBank1);
+    actionsList = { ActionItem(ViewBalance), ActionItem(Deposit, 1000), ActionItem(EndSession) };
     
+    cout << "New balance is:" << testAtm1.accountAction(ViewBalance).str;
 }
