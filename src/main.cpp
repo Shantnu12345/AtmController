@@ -59,17 +59,18 @@ void runSession(AtmController controller,
 int main()
 {
     //Test 0
+    cout<<"====================Test0========================"<<endl;
     Bank emptyBank;
     AtmController emptyAtm(emptyBank);
     vector<ActionItem> actionsList = { ActionItem(ViewBalance), ActionItem(EndSession) };
     runSession(emptyAtm, "123456", "123", Savings, actionsList);
 
+    cout<<endl<<"====================Test1========================"<<endl;
     //Test1
     Bank testBank1;
     testBank1.addAccount("982567", "456", Checking, 10000);
     testBank1.addAccount("142567", "643", Checking, 20000);
     AtmController testAtm1(testBank1);
     actionsList = { ActionItem(ViewBalance), ActionItem(Deposit, 1000), ActionItem(EndSession) };
-    
-    cout << "New balance is:" << testAtm1.accountAction(ViewBalance).str;
+    runSession(testAtm1, "982567", "456", Checking, actionsList);
 }

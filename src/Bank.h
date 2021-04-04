@@ -1,38 +1,8 @@
 #pragma once
-#include <iostream>
-#include <string>
+#include "Account.h"
 #include <unordered_map>
 
-using namespace std;
-
-enum AccountType
-{
-    Checking,
-    Savings
-};
-
-class Account
-{
-public:
-    Account(string cardNum, string pin, AccountType accountType, unsigned int newBalance)
-        : _cardNum(cardNum), _pin(pin), _balances() 
-    {
-        _balances[accountType] = newBalance;
-    }
-    
-    bool checkAccountTypeExists(AccountType accountType) const;
-    bool updateBalance(AccountType accountType, unsigned int newBalance);
-    unsigned getBalance(AccountType accountType) const;
-    string getPin() const;
-
-protected:
-    string _cardNum;
-    string _pin;
-    unordered_map<AccountType, unsigned int, std::hash<int>> _balances; //Maps from account type (example checking, savings) to balance info
-                                                        //For simplicity it is assumed that a account type doesnt exist if 
-                                                        //it is not present in _balances 
-};
-
+//Fake Bank API that maintains all the accounts. The AtmController calls this API to validate if account/pin exists, update balance for withdraw/deposit, etc
 class Bank
 {
 public:

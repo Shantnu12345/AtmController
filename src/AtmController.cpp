@@ -10,7 +10,7 @@ AtmController::AtmController(Bank const& bank)
 
 bool AtmController::swipe(string cardNum)
 {   
-    if(_bank.checkAccount(cardNum))
+    if(_bank.checkAccountExists(cardNum))
     {
         _currSession.cardNum = cardNum;
         return true;
@@ -21,7 +21,7 @@ bool AtmController::swipe(string cardNum)
 
 bool AtmController::validatePin(string pin)
 {   
-    if(_bank.checkPin(_currSession.cardNum, pin))
+    if(_bank.checkPinValid(_currSession.cardNum, pin))
         return true;
 
     return false;
@@ -29,7 +29,7 @@ bool AtmController::validatePin(string pin)
 
 bool AtmController::selectAccount(AccountType accountType)
 {
-    if(_bank.checkAccountType(_currSession.cardNum, accountType))
+    if(_bank.checkAccountTypeExists(_currSession.cardNum, accountType))
     {
         _currSession.accountType = accountType;
         return true;
@@ -69,18 +69,40 @@ Result AtmController::accountAction(Action action, unsigned int amount)
             break;
         }
 
-        _bank.withdraw(_currSession.cardNum, _currSession.accountType, amount);
+        if(_bank.withdraw(_currSession.cardNum, _currSession.accountType, amount))
+        {
+            res.str = "Withdraw success. Please collect your cash. New amount in the account is " 
+                + to_string(_bank.getBalance(_currSession.cardNum, _currSession.accountType));
+            res.success = true;
+        }
+        else
+        {
+            res.str = "Withdraw Failure!!!"; 
+            res.success = false;
+        }
+        
+
         break;
 
     case Deposit:
         if(amount > MAX_DEPOSIT_LIMIT)
         {
-            res.str = "Amount is greater than the max deposit limit.");
+            res.str = "Amount is greater than the max deposit limit.";
             res.success = false;            
             break;
         }
 
-        _bank.deposit(_currSession.cardNum, _currSession.accountType, amount);
+        if(_bank.deposit(_currSession.cardNum, _currSession.accountType, amount))
+        {
+            res.str = "Deposit success. New amount in the account is " 
+                + to_string(_bank.getBalance(_currSession.cardNum, _currSession.accountType));
+            res.success = true;
+        }
+        else
+        {
+            res.str = "Deposit Failure!!!"; 
+            res.success = false;
+        }
         break;
 
     default:
