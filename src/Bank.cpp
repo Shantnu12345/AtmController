@@ -43,12 +43,10 @@ bool Bank::withdraw(string cardNum, AccountType accountType, unsigned int amount
 
 bool Bank::deposit(string cardNum, AccountType accountType, unsigned int amount)
 {
-    cout<<"h1 ";
     if(!_accounts.at(cardNum).checkAccountTypeExists(accountType))
         return false;
     
     unsigned int balance = _accounts.at(cardNum).getBalance(accountType);
-    cout<<balance;
     _accounts.at(cardNum).updateBalance(accountType, balance + amount);
     return true;
 }
