@@ -15,13 +15,10 @@ bool Account::checkAccountTypeExists(AccountType accountType) const
 
 bool Account::updateBalance(AccountType accountType, unsigned int newBalance) 
 {
-  cout<<" h2 ";
     if(!checkAccountTypeExists(accountType))
         return false;
 
-  cout<<newBalance;
     _balances[toString(accountType)] = newBalance;
-  cout<<" h3 ";
 
     return true;
 }
