@@ -16,7 +16,7 @@ void runSession(AtmController & controller,
                 string cardNum, 
                 string pin, 
                 AccountType accountType, 
-                vector<ActionItem> const& ActionItems)
+                vector<ActionItem> const& actionItems)
 {
     cout<<"Welcome dear customer. Please swipe your card."<<endl;
     bool success = controller.swipe(cardNum);
@@ -43,7 +43,7 @@ void runSession(AtmController & controller,
     }
 
     //Finally, perform all the actions from the action list: Checkbalance, Withdraw, Deposit, Exit session
-    for(auto const& action:ActionItems)
+    for(auto const& action:actionItems)
     {
         Result res = controller.accountAction(action.action, action.amount);
         cout<<res.str<<endl;
@@ -61,20 +61,24 @@ int main()
     AtmController testAtm(testBank);
     
     cout<<"====================Test0 - No account========================"<<endl;
-    vector<ActionItem> ActionItems = { ActionItem(ViewBalance), ActionItem(EndSession) };
-    runSession(testAtm, "123456", "123", Savings, ActionItems);
+    vector<ActionItem> actionItems = { ActionItem(ViewBalance), ActionItem(EndSession) };
+    runSession(testAtm, "123456", "123", Savings, actionItems);
 
-    cout<<endl<<"====================Test1 - Incorrect account type chosen ========================"<<endl;
-    ActionItems = { ActionItem(ViewBalance), ActionItem(Deposit, 1000), ActionItem(EndSession) };
-    runSession(testAtm, "982567", "456", Savings, ActionItems);
+    cout<<endl<<"====================Test1 - Incorrect pin========================"<<endl;
+    actionItems = { ActionItem(ViewBalance), ActionItem(EndSession) };
+    runSession(testAtm, "982567", "454", Savings, actionItems);
 
-    cout<<endl<<"====================Test2 - Deposit========================"<<endl;
-    ActionItems = { ActionItem(ViewBalance), ActionItem(Deposit, 1000), ActionItem(EndSession) };
-    runSession(testAtm, "142567", "643", Checking, ActionItems);
+    cout<<endl<<"====================Test2 - Incorrect account type chosen ========================"<<endl;
+    actionItems = { ActionItem(ViewBalance), ActionItem(Deposit, 1000), ActionItem(EndSession) };
+    runSession(testAtm, "982567", "456", Savings, actionItems);
 
-    cout<<endl<<"====================Test3 - Withdraw ========================"<<endl;
-    ActionItems = { ActionItem(ViewBalance), ActionItem(Withdraw, 2000), ActionItem(EndSession) };
-    runSession(testAtm, "142567", "643", Checking, ActionItems);
+    cout<<endl<<"====================Test3 - ViewBalance/Deposit========================"<<endl;
+    actionItems = { ActionItem(ViewBalance), ActionItem(Deposit, 1000), ActionItem(EndSession) };
+    runSession(testAtm, "142567", "643", Checking, actionItems);
+
+    cout<<endl<<"====================Test4 - ViewBalance/Withdraw ========================"<<endl;
+    actionItems = { ActionItem(ViewBalance), ActionItem(Withdraw, 2000), ActionItem(EndSession) };
+    runSession(testAtm, "142567", "643", Checking, actionItems);
 
 
 }
